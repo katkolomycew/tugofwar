@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Tug of War</title>
+</head>
+
+<body>
+
+  <h1 id="instructions">Press the arrows or click the circles to play!</h1>
+  <h1 id="instructions-responsive">Tap the circles to play!</h1>
+  <div id="player-one" class="player"></div>
+  <div id="divider"></div>
+  <div id="player-two" class="player"></div>
+  <div id="rope"></div>
+  <p id="scoreboard">Scoreboard</p>
+  <p id="red">Red: 0</p>
+  <p id="blue">Blue: 0</p>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+
+    body {
+      background-color: dimgrey;
+      height: 100%;
+      width: 100%;
+    }
+
+    main {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      height: 100%;
+      width: 100%;
+    }
+
+    #instructions {
+      color: white;
+      font-style: italic;
+      font-size: 2rem;
+      position: absolute;
+      top: 5%;
+      left: 25%;
+    }
+
+    #instructions-responsive {
+      opacity: 0;
+    }
+
+    #divider {
+      border: 2px solid black;
+      background: white;
+      position: absolute;
+      opacity: 0.5;
+      bottom: 0;
+      left: 50%;
+      height: 85%;
+      width: 10px;
+    }
+
+    .player {
+      border: 2px solid black;
+      border-radius: 50%;
+      cursor: pointer;
+      height: 100px;
+      width: 100px;
+    }
+
+    #player-one {
+      background-color: rosybrown;
+      position: absolute;
+      top: 42.5%;
+      left: 10%;
+    }
+
+    #player-two {
+      background-color: paleturquoise;
+      position: absolute;
+      top: 42.5%;
+      right: 10%;
+    }
+
+    #rope {
+      background-color: chocolate;
+      border: 2px solid black;
+      position: fixed;
+      transform: translate(-50%, -50%);
+      transition: .3s;
+      top: 50%;
+      left: 50%;
+      height: 5px;
+      width: 32.5%;
+    }
+
+    #scoreboard {
+      color: white;
+      font-size: 1.5rem;
+      position: absolute;
+      text-transform: uppercase;
+      font-weight: bold;
+      top: 80%;
+      left: 5%;
+    }
+
+    #red {
+      color: white;
+      font-size: 1.25rem;
+      position: absolute;
+      top: 85%;
+      left: 5%;
+    }
+
+    #blue {
+      color: white;
+      font-size: 1.25rem;
+      position: absolute;
+      top: 90%;
+      left: 5%;
+    }
+
+/* -------------------> MEDIA */
+
+    @media only screen and (max-width: 1024px) {
+      #instructions {
+        opacity: 0;
+      }
+
+      #instructions-responsive {
+        opacity: 1;
+        color: white;
+        font-style: italic;
+        font-size: 2rem;
+        position: absolute;
+        top: 5%;
+        left: 33%;
+      }
+
+      #player-one,
+      #player-two {
+        top: 46%;
+      }
+    }
+
+    @media only screen and (max-width: 768px) {
+      #instructions-responsive {
+        left: 28%;
+      }
+
+      #player-one,
+      #player-two {
+        top: 45%;
+      }
+
+      @media only screen and (max-width: 414px) {
+        #instructions-responsive {
+          left: 9%;
+        }
+
+        #player-one,
+        #player-two {
+          height: 75px;
+          width: 75px;
+        }
+
+        #rope {
+          width: 27.5%;
+        }
+
+        #scoreboard {
+          font-size: 1.3rem;
+        }
+      }
+
+      @media only screen and (max-width: 375px) {
+        #instructions-responsive {
+          font-size: 1.75rem;
+          left: 10%;
+        }
+
+        #player-one,
+        #player-two {
+          top: 46%;
+          height: 65px;
+          width: 65px;
+        }
+
+        #rope {
+          width: 25%;
+        }
+
+        #scoreboard {
+          font-size: 1.25rem;
+        }
+      }
+
+      @media only screen and (max-width: 320px) {
+        #instructions-responsive {
+          font-size: 1.5rem;
+        }
+
+        #player-one,
+        #player-two {
+          top: 45%;
+          height: 55px;
+          width: 55px;
+        }
+
+        #scoreboard {
+          font-size: 1.1rem;
+        }
+
+        #red,
+        #blue {
+          font-size: 1rem;
+        }
+      }
+    }
+  </style>
+
+  <script>
+    let ropePosition = 50;
+    let rope = document.getElementById("rope");
+    let red = document.getElementById("red");
+    let blue = document.getElementById("blue");
+    let redPlayer = document.getElementById("player-one");
+    let bluePlayer = document.getElementById("player-two");
+    let redWin = 0;
+    let blueWin = 0;
+
+    window.onkeyup = event => {
+      let key = event.key;
+
+      if (key == "ArrowLeft") {
+        ropePosition -= 3;
+      } else if (key == "ArrowRight") {
+        ropePosition += 3;
+      }
+      win();
+    };
+
+    const win = () => {
+      if (ropePosition >= 69) {
+        alert("Blue wins!");
+        ropePosition = 50;
+        blueWin++;
+        blue.innerHTML = "Blue: " + blueWin;
+      } else if (ropePosition <= 31) {
+        alert("Red wins!");
+        ropePosition = 50;
+        redWin++;
+        red.innerHTML = "Red: " + redWin;
+      }
+      rope.style.left = ropePosition + "%";
+    };
+
+    redPlayer.addEventListener("click", function () {
+      ropePosition -= 1;
+      win();
+    });
+
+    bluePlayer.addEventListener("click", function () {
+      ropePosition += 1;
+      win();
+    });
+  </script>
+
+</body>
+
+</html>
